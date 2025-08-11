@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="RemoteRepositoriesConfiguration">
+    <remote-repository>
+      <option name="id" value="releases" />
+      <option name="name" value="zeta-libs-release" />
+      <option name="url" value="https://artifactory.internal.ciaas.zetaapps.in/artifactory/zeta-libs-release" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="central" />
+      <option name="name" value="Central Repository" />
+      <option name="url" value="https://repo.maven.apache.org/maven2" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="repo1.maven.org" />
+      <option name="name" value="repo1.maven.org" />
+      <option name="url" value="http://repo1.maven.org/maven2" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="ow.nexus.release" />
+      <option name="name" value="Olympus Release Repository" />
+      <option name="url" value="https://nexus.internal.olympus-world.zetaapps.in/repository/maven-releases/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="central" />
+      <option name="name" value="Maven Central repository" />
+      <option name="url" value="https://repo1.maven.org/maven2" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="jboss.community" />
+      <option name="name" value="JBoss Community repository" />
+      <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="sparrow-mvn-snapshot" />
+      <option name="name" value="Sparrow Maven Snapshot" />
+      <option name="url" value="https://sparrow.jfrog.io/artifactory/sparrow-mvn-snapshot" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="ow.nexus.snapshot" />
+      <option name="name" value="Olympus Snapshot Repository" />
+      <option name="url" value="https://nexus.internal.olympus-world.zetaapps.in/repository/maven-snapshots/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="sparrow-mvn-release" />
+      <option name="name" value="Sparrow Maven Release" />
+      <option name="url" value="https://sparrow.jfrog.io/artifactory/sparrow-mvn-release" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="snapshots" />
+      <option name="name" value="zeta-libs-snapshot" />
+      <option name="url" value="https://artifactory.internal.ciaas.zetaapps.in/artifactory/zeta-libs-snapshot" />
+    </remote-repository>
+  </component>
+</project>
