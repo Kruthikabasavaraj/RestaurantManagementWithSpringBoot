@@ -1,5 +1,6 @@
 package com.example.restaurant.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
@@ -20,5 +21,6 @@ public class Customer {
     private LocalDateTime updatedTime;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Booking> bookings;
 }
