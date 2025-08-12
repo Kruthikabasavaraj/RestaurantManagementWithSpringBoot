@@ -20,8 +20,19 @@ class BookingServiceTest {
 
     @Test
     void createBooking_shouldSetTimes() {
-        Booking b = new Booking(null, 1, LocalDateTime.now().plusDays(1), 4, null, null);
-        when(repo.save(any())).thenAnswer(i -> { var arg = i.getArgument(0); arg.setId(1); return arg; });
+        Booking b = new Booking(
+                null,
+                null,
+                LocalDateTime.now().plusDays(1),
+                4,
+                null,
+                null,
+                null
+        );        when(repo.save(any())).thenAnswer(i -> {
+            Booking arg = i.getArgument(0);
+            arg.setId(1);
+            return arg;
+        });
         var saved = service.createBooking(b);
         assertNotNull(saved.getCreatedTime());
         assertNotNull(saved.getUpdatedTime());

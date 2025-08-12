@@ -1,8 +1,9 @@
 package com.example.restaurant.service.impl;
 
-import com.example.restaurant.service.MenuService;
 import com.example.restaurant.entity.MenuItem;
+import com.example.restaurant.exception.MenuItemNotFoundException;
 import com.example.restaurant.repository.MenuItemRepository;
+import com.example.restaurant.service.MenuService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,16 +22,33 @@ public class MenuServiceImpl implements MenuService {
         return repo.save(item);
     }
 
-    @Override public List<MenuItem> getAll(){ return repo.findAll(); }
-    @Override public MenuItem getById(Integer id){ return repo.findById(id).orElseThrow(); }
-    @Override public MenuItem update(Integer id, MenuItem item){
+    @Override
+    public List<MenuItem> getAll() {
+        return repo.findAll();
+    }
+
+    @Override
+    public MenuItem getById(Integer id) {
+        return repo.findById(id)
+                .orElseThrow(() -> new MenuItemNotFoundException("Menu item not found with id: " + id));
+    }
+
+    @Override
+    public MenuItem update(Integer id, MenuItem item) {
         var ex = getById(id);
         ex.setName(item.getName());
         ex.setPrice(item.getPrice());
         ex.setUpdatedTime(LocalDateTime.now());
         return repo.save(ex);
     }
-    @Override public void delete(Integer id){ repo.deleteById(id); }
+
+    @Override
+    public void delete(Integer id) {
+        if (!repo.existsById(id)) {
+            throw new MenuItemNotFoundException("Menu item not found with id: " + id);
+        }
+        repo.deleteById(id);
+    }
 
     @Override
     public MenuItem updatePrice(Integer id, Double price) {
