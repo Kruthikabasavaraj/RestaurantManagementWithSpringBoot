@@ -1,6 +1,7 @@
 package com.example.restaurant.service.impl;
 
 import com.example.restaurant.entity.Customer;
+import com.example.restaurant.exception.CustomerNotFoundException;
 import com.example.restaurant.repository.CustomerRepository;
 import com.example.restaurant.service.CustomerService;
 import org.springframework.http.ResponseEntity;
@@ -23,9 +24,9 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public ResponseEntity<Customer> getCustomer(Integer id) {
-        return repo.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        Customer customer = repo.findById(id)
+                .orElseThrow(() -> new CustomerNotFoundException("Customer not found with id: " + id));
+        return ResponseEntity.ok(customer);
     }
 
     @Override
@@ -36,27 +37,26 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public ResponseEntity<Customer> updateCustomer(Integer id, Customer customer) {
-        return repo.findById(id)
-                .map(existing -> {
-                    customer.setId(existing.getId());
-                    return ResponseEntity.ok(repo.save(customer));
-                })
-                .orElse(ResponseEntity.notFound().build());
+        Customer existing = repo.findById(id)
+                .orElseThrow(() -> new CustomerNotFoundException("Customer not found with id: " + id));
+        customer.setId(existing.getId());
+        return ResponseEntity.ok(repo.save(customer));
     }
 
     @Override
     public ResponseEntity<Void> deleteCustomer(Integer id) {
+        if (!repo.existsById(id)) {
+            throw new CustomerNotFoundException("Customer not found with id: " + id);
+        }
         repo.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
     @Override
     public ResponseEntity<Customer> updatePhone(Integer id, String phone) {
-        return repo.findById(id)
-                .map(existing -> {
-                    existing.setPhone(phone);
-                    return ResponseEntity.ok(repo.save(existing));
-                })
-                .orElse(ResponseEntity.notFound().build());
+        Customer existing = repo.findById(id)
+                .orElseThrow(() -> new CustomerNotFoundException("Customer not found with id: " + id));
+        existing.setPhone(phone);
+        return ResponseEntity.ok(repo.save(existing));
     }
 }
