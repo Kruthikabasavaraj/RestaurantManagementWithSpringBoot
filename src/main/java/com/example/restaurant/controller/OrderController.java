@@ -22,11 +22,9 @@ public class OrderController {
     @PostMapping
     public ResponseEntity<OrderEntity> create(@RequestBody OrderCreateDTO dto){
         OrderEntity order = new OrderEntity();
-        order.setBookingId(dto.getBookingId());
         order.setWaiterName(dto.getWaiterName());
         List<OrderItem> items = dto.getItems().stream().map(i -> {
             var oi = new OrderItem();
-            oi.setMenuId(i.getMenuId());
             oi.setQuantity(i.getQuantity());
             return oi;
         }).collect(Collectors.toList());

@@ -23,7 +23,6 @@ public class OrderServiceImpl implements OrderService {
         order.setStatus("PLACED");
         var saved = orderRepository.save(order);
         for (var it : items) {
-            it.setOrderId(saved.getId());
             orderItemRepository.save(it);
         }
         return saved;

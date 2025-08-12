@@ -12,33 +12,37 @@ import java.util.List;
 public class CustomerController {
     private final CustomerService service;
 
-    public CustomerController(CustomerService service){ this.service = service; }
+    public CustomerController(CustomerService service) {
+        this.service = service;
+    }
 
     @GetMapping
-    public List<Customer> all(){ return service.findAll(); }
+    public List<Customer> getAllCustomers() {
+        return service.getAllCustomers();
+    }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Customer> get(@PathVariable Integer id){
-        return service.findById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<Customer> getCustomer(@PathVariable Integer id) {
+        return service.getCustomer(id);
     }
 
     @PostMapping
-    public ResponseEntity<Customer> create(@RequestBody Customer c){
-        Customer saved = service.save(c);
-        return ResponseEntity.ok(saved);
+    public ResponseEntity<Customer> createCustomer(@RequestBody Customer customer) {
+        return service.createCustomer(customer);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Customer> update(@PathVariable Integer id, @RequestBody Customer c){
-        return service.findById(id).map(existing -> {
-            c.setId(existing.getId());
-            return ResponseEntity.ok(service.save(c));
-        }).orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<Customer> updateCustomer(@PathVariable Integer id, @RequestBody Customer customer) {
+        return service.updateCustomer(id, customer);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Integer id){
-        service.deleteById(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<Void> deleteCustomer(@PathVariable Integer id) {
+        return service.deleteCustomer(id);
+    }
+
+    @PatchMapping("/{id}/phone")
+    public ResponseEntity<Customer> updatePhone(@PathVariable Integer id, @RequestParam String phone) {
+        return service.updatePhone(id, phone);
     }
 }
