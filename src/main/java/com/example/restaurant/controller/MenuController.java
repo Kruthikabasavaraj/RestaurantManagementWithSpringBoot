@@ -28,4 +28,9 @@ public class MenuController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id){ service.delete(id); return ResponseEntity.noContent().build(); }
+
+    @PatchMapping("/{id}/price")
+    public ResponseEntity<MenuItem> updatePrice(@PathVariable Integer id, @RequestParam Double price) {
+        return ResponseEntity.ok(service.updatePrice(id, price));
+    }
 }

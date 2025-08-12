@@ -28,4 +28,9 @@ public class BookingController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id){ service.deleteBooking(id); return ResponseEntity.noContent().build(); }
+
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<Booking> updateStatus(@PathVariable Integer id, @RequestParam Integer numberOfPeople) {
+        return ResponseEntity.ok(service.updateBookingNoOfPeople(id, numberOfPeople));
+    }
 }

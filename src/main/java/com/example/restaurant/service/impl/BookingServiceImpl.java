@@ -31,4 +31,12 @@ public class BookingServiceImpl implements BookingService {
         return bookingRepository.save(ex);
     }
     @Override public void deleteBooking(Integer id){ bookingRepository.deleteById(id); }
+
+    @Override
+    public Booking updateBookingNoOfPeople(Integer id, Integer numPeople) {
+        var booking = getBookingById(id);
+        booking.setNumPeople(numPeople);
+        booking.setUpdatedTime(LocalDateTime.now());
+        return bookingRepository.save(booking);
+    }
 }

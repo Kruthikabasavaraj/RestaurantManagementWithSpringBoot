@@ -8,4 +8,5 @@ public interface BookingService {
     Booking getBookingById(Integer id);
     Booking updateBooking(Integer id, Booking booking);
     void deleteBooking(Integer id);
+    Booking updateBookingNoOfPeople(Integer id, Integer numPeople);
 }

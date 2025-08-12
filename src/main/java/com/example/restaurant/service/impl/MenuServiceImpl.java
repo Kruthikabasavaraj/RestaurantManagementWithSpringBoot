@@ -31,4 +31,12 @@ public class MenuServiceImpl implements MenuService {
         return repo.save(ex);
     }
     @Override public void delete(Integer id){ repo.deleteById(id); }
+
+    @Override
+    public MenuItem updatePrice(Integer id, Double price) {
+        var item = getById(id);
+        item.setPrice(price);
+        item.setUpdatedTime(LocalDateTime.now());
+        return repo.save(item);
+    }
 }

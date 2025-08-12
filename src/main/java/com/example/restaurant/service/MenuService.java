@@ -7,4 +7,5 @@ public interface MenuService {
     MenuItem getById(Integer id);
     MenuItem update(Integer id, MenuItem item);
     void delete(Integer id);
+    MenuItem updatePrice(Integer id, Double price);
 }
