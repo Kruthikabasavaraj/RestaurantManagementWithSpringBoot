@@ -6,6 +6,8 @@ import com.example.restaurant.entity.OrderItem;
 import com.example.restaurant.service.OrderService;
 import com.example.restaurant.repository.OrderItemRepository;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,11 +18,13 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/orders")
 @RequiredArgsConstructor
 public class OrderController {
+    private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
     private final OrderService service;
     private final OrderItemRepository orderItemRepository;
 
     @PostMapping
-    public ResponseEntity<OrderEntity> create(@RequestBody OrderCreateDTO dto){
+    public ResponseEntity<OrderEntity> create(@RequestBody OrderCreateDTO dto) {
+        logger.info("Creating order: {}", dto);
         OrderEntity order = new OrderEntity();
         order.setWaiterName(dto.getWaiterName());
         List<OrderItem> items = dto.getItems().stream().map(i -> {
@@ -32,16 +36,27 @@ public class OrderController {
     }
 
     @GetMapping
-    public ResponseEntity<List<OrderEntity>> all(){ return ResponseEntity.ok(service.getAllOrders()); }
+    public ResponseEntity<List<OrderEntity>> all() {
+        logger.info("Fetching all orders");
+        return ResponseEntity.ok(service.getAllOrders());
+    }
 
     @GetMapping("/{id}")
-    public ResponseEntity<OrderEntity> byId(@PathVariable Integer id){ return ResponseEntity.ok(service.getById(id)); }
+    public ResponseEntity<OrderEntity> byId(@PathVariable Integer id) {
+        logger.info("Fetching order by id: {}", id);
+        return ResponseEntity.ok(service.getById(id));
+    }
 
     @PutMapping("/{id}/status")
-    public ResponseEntity<OrderEntity> status(@PathVariable Integer id, @RequestParam String status){
+    public ResponseEntity<OrderEntity> status(@PathVariable Integer id, @RequestParam String status) {
+        logger.info("Updating status for order id: {} to {}", id, status);
         return ResponseEntity.ok(service.updateStatus(id, status));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Integer id){ service.deleteOrder(id); return ResponseEntity.noContent().build(); }
+    public ResponseEntity<Void> delete(@PathVariable Integer id) {
+        logger.info("Deleting order id: {}", id);
+        service.deleteOrder(id);
+        return ResponseEntity.noContent().build();
+    }
 }
