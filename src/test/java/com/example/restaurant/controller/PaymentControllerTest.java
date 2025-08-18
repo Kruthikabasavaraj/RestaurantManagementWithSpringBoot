@@ -1,9 +1,13 @@
-package com.example.restaurant.controller;
+ package com.example.restaurant.controller;
 
 import com.example.restaurant.entity.Payment;
 import com.example.restaurant.service.PaymentService;
+import com.example.restaurant.config.JwtUtil; // Add if you have this bean
+import com.example.restaurant.config.JwtAuthFilter; // Add if you have this bean
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
@@ -14,9 +18,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(PaymentController.class)
+@AutoConfigureMockMvc(addFilters = false)
 public class PaymentControllerTest {
     @Autowired private MockMvc mockMvc;
     @MockBean private PaymentService service;
+    @MockBean private JwtUtil jwtUtil; // Add if needed
+    @MockBean private JwtAuthFilter jwtAuthFilter; // Add if needed
 
     @Test
     void testGetAll() throws Exception {

@@ -2,8 +2,12 @@ package com.example.restaurant.controller;
 
 import com.example.restaurant.entity.MenuItem;
 import com.example.restaurant.service.MenuService;
+import com.example.restaurant.config.JwtUtil; // Add if you have this bean
+import com.example.restaurant.config.JwtAuthFilter; // Add if you have this bean
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
@@ -14,9 +18,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(MenuController.class)
+@AutoConfigureMockMvc(addFilters = false)
 public class MenuControllerTest {
     @Autowired private MockMvc mockMvc;
     @MockBean private MenuService service;
+    @MockBean private JwtUtil jwtUtil; // Add if needed
+    @MockBean private JwtAuthFilter jwtAuthFilter; // Add if needed
 
     @Test
     void testGetAll() throws Exception {

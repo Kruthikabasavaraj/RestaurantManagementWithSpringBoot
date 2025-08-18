@@ -28,4 +28,6 @@ public class AuthController {
         var token = userService.login(req.getEmail(), req.getPassword());
         return ResponseEntity.ok(new LoginResponse(token));
     }
+
+
 }

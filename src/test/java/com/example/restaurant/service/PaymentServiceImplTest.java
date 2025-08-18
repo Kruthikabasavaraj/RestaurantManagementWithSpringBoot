@@ -2,6 +2,7 @@ package com.example.restaurant.service;
 
 import com.example.restaurant.entity.Payment;
 import com.example.restaurant.exception.PaymentNotFoundException;
+import com.example.restaurant.repository.OrderRepository;
 import com.example.restaurant.repository.PaymentRepository;
 import com.example.restaurant.service.impl.PaymentServiceImpl;
 import org.junit.jupiter.api.*;
@@ -14,12 +15,14 @@ import static org.mockito.Mockito.*;
 
 class PaymentServiceImplTest {
     @Mock PaymentRepository repo;
+    @Mock
+    OrderRepository orderRepository;
     PaymentServiceImpl service;
 
     @BeforeEach
     void setup() {
         MockitoAnnotations.openMocks(this);
-        service = new PaymentServiceImpl(repo);
+        service = new PaymentServiceImpl(repo, orderRepository);
     }
 
     @Test
