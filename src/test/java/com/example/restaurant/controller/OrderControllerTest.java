@@ -5,6 +5,7 @@ import com.example.restaurant.entity.OrderEntity;
 import com.example.restaurant.service.OrderService;
 import com.example.restaurant.repository.OrderItemRepository;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ public class OrderControllerTest {
 
     @Test
     void testCreate() throws Exception {
-        when(service.createOrder(Mockito.any(), Mockito.anyList())).thenReturn(new OrderEntity());
+        when(service.createOrder(Mockito.any(), Mockito.anyList(),Mockito.any() )).thenReturn(new OrderEntity());
         mockMvc.perform(post("/api/orders")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"bookingId\":1,\"waiterName\":\"Alice\",\"items\":[{\"menuId\":1,\"quantity\":2}]}"))

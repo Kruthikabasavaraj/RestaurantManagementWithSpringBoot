@@ -1,5 +1,8 @@
 package com.example.restaurant.service.impl;
 
+import com.example.restaurant.entity.OrderEntity;
+import com.example.restaurant.exception.InvalidOrderStatusException;
+import com.example.restaurant.repository.OrderRepository;
 import com.example.restaurant.service.PaymentService;
 import com.example.restaurant.entity.Payment;
 import com.example.restaurant.exception.PaymentNotFoundException;
@@ -17,10 +20,21 @@ import java.util.List;
 public class PaymentServiceImpl implements PaymentService {
     private static final Logger logger = LoggerFactory.getLogger(PaymentServiceImpl.class);
     private final PaymentRepository repo;
+    private final OrderRepository orderRepository;
 
     @Override
     public Payment createPayment(Payment p) {
-        logger.info("Creating payment for order: {}", p.getId());
+        Integer orderId = p.getOrder() != null ? p.getOrder().getId() : null;
+        if (orderId == null) {
+            throw new InvalidOrderStatusException("Order ID is required for payment");
+        }
+        OrderEntity order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new InvalidOrderStatusException("Order not found"));
+        if (order.getStatus() != OrderEntity.OrderStatus.DONE) {
+            logger.warn("Cannot create payment: Order status is not DONE");
+            throw new InvalidOrderStatusException("Payment can only be created for orders with status DONE");
+        }
+        p.setOrder(order); // set the fully loaded order
         p.setPaymentTime(LocalDateTime.now());
         Payment saved = repo.save(p);
         logger.info("Payment created with id: {}", saved.getId());

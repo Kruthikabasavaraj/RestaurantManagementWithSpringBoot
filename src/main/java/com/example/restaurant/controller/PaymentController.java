@@ -17,7 +17,7 @@ public class PaymentController {
     private static final Logger logger = LoggerFactory.getLogger(PaymentController.class);
     private final PaymentService service;
 
-    @PostMapping
+    @PostMapping(consumes = "application/json", produces = "application/json")
     public ResponseEntity<Payment> create(@RequestBody Payment p) {
         logger.info("Creating payment: {}", p);
         return ResponseEntity.status(201).body(service.createPayment(p));

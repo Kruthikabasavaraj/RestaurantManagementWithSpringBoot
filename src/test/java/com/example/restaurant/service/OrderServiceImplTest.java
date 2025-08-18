@@ -4,6 +4,8 @@ package com.example.restaurant.service;
 import com.example.restaurant.entity.OrderEntity;
 import com.example.restaurant.entity.OrderItem;
 import com.example.restaurant.exception.OrderNotFoundException;
+import com.example.restaurant.repository.BookingRepository;
+import com.example.restaurant.repository.MenuItemRepository;
 import com.example.restaurant.repository.OrderItemRepository;
 import com.example.restaurant.repository.OrderRepository;
 import com.example.restaurant.service.impl.OrderServiceImpl;
@@ -18,12 +20,16 @@ import static org.mockito.Mockito.*;
 class OrderServiceImplTest {
     @Mock OrderRepository orderRepo;
     @Mock OrderItemRepository itemRepo;
+    @Mock
+    BookingRepository bookingRepository;
+    @Mock
+    MenuItemRepository menuItemRepository;
     OrderServiceImpl service;
 
     @BeforeEach
     void setup() {
         MockitoAnnotations.openMocks(this);
-        service = new OrderServiceImpl(orderRepo, itemRepo);
+        service = new OrderServiceImpl(orderRepo, itemRepo, bookingRepository, menuItemRepository);
     }
 
     @Test
@@ -32,7 +38,7 @@ class OrderServiceImplTest {
         OrderItem item = new OrderItem();
         when(orderRepo.save(any())).thenReturn(order);
         when(itemRepo.save(any())).thenReturn(item);
-        assertEquals(order, service.createOrder(order, List.of(item)));
+        assertEquals(order, service.createOrder(order, List.of(item), 1));
     }
 
     @Test

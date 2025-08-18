@@ -1,6 +1,7 @@
 package com.example.restaurant.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
@@ -17,7 +18,7 @@ public class Booking {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonBackReference
+    @JsonBackReference("customer-booking")
     @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
 
@@ -27,5 +28,6 @@ public class Booking {
     private LocalDateTime updatedTime;
 
     @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference( "booking-orders")
     private List<OrderEntity> orders;
 }

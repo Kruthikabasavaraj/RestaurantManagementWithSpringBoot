@@ -1,5 +1,7 @@
 package com.example.restaurant.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
@@ -17,15 +19,27 @@ public class OrderEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "booking_id", nullable = false)
+    @JsonBackReference("booking-orders")
     private Booking booking;
 
     private String waiterName;
-    private String status;
+
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
+
     private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference("order-items")
     private List<OrderItem> items;
 
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonManagedReference("order-payment")
     private Payment payment;
+
+    public enum OrderStatus {
+        PLACED,
+        PREPARED,
+        DONE
+    }
 }

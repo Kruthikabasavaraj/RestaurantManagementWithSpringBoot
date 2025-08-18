@@ -2,7 +2,10 @@ package com.example.restaurant.service.impl;
 
 import com.example.restaurant.entity.OrderEntity;
 import com.example.restaurant.entity.OrderItem;
+import com.example.restaurant.exception.BookingNotFoundException;
 import com.example.restaurant.exception.OrderNotFoundException;
+import com.example.restaurant.repository.BookingRepository;
+import com.example.restaurant.repository.MenuItemRepository;
 import com.example.restaurant.repository.OrderItemRepository;
 import com.example.restaurant.repository.OrderRepository;
 import com.example.restaurant.service.OrderService;
@@ -20,16 +23,30 @@ public class OrderServiceImpl implements OrderService {
     private static final Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
+    private final BookingRepository bookingRepository;
+    private final MenuItemRepository menuRepository;
 
+    // Java
     @Override
-    public OrderEntity createOrder(OrderEntity order, List<OrderItem> items) {
-        logger.info("Creating order for customer: {}", order.getId());
+    public OrderEntity createOrder(OrderEntity order, List<OrderItem> items, Integer bookingId) {
+        logger.info("Creating order for customer:");
         order.setCreatedAt(LocalDateTime.now());
-        order.setStatus("PLACED");
-        var saved = orderRepository.save(order);
+        var booking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new BookingNotFoundException("Booking not found"));
+        order.setBooking(booking);
+        order.setStatus(OrderEntity.OrderStatus.PLACED);
+
         for (var it : items) {
-            orderItemRepository.save(it);
+            if (it.getMenu() == null && it.getMenuId() != null) {
+                var menu = menuRepository.findById(it.getMenuId())
+                        .orElseThrow(() -> new RuntimeException("Menu not found"));
+                it.setMenu(menu);
+            }
+            it.setOrder(order); // Link to parent order before saving
         }
+        order.setItems(items); // Set items in order
+
+        var saved = orderRepository.save(order); // Cascade saves items
         logger.info("Order created with id: {}", saved.getId());
         return saved;
     }
@@ -54,7 +71,7 @@ public class OrderServiceImpl implements OrderService {
     public OrderEntity updateStatus(Integer id, String status) {
         logger.info("Updating status for order id: {} to {}", id, status);
         var ex = getById(id);
-        ex.setStatus(status);
+        ex.setStatus(OrderEntity.OrderStatus.valueOf(status.toUpperCase()));
         OrderEntity updated = orderRepository.save(ex);
         logger.info("Order status updated for id: {}", updated.getId());
         return updated;

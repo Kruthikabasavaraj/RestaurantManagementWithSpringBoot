@@ -21,6 +21,6 @@ public class MenuItem {
     private LocalDateTime updatedTime;
 
     @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @JsonManagedReference( "menu-item-order")
     private List<OrderItem> orderItems;
 }

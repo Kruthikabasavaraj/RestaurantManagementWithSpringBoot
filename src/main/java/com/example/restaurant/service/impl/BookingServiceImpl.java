@@ -21,6 +21,7 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public Booking createBooking(Booking booking) {
         logger.info("Creating booking for customer: {}", booking.getId());
+        booking.setBookingTime(LocalDateTime.now());
         booking.setCreatedTime(LocalDateTime.now());
         booking.setUpdatedTime(LocalDateTime.now());
         Booking saved = bookingRepository.save(booking);

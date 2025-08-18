@@ -16,12 +16,16 @@ public class OrderItem {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id", nullable = false)
+    @JsonBackReference("order-items")
     private OrderEntity order;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonBackReference
+    @JsonBackReference( "menu-item-order")
     @JoinColumn(name = "menu_id", nullable = false)
     private MenuItem menu;
 
     private Integer quantity;
+
+    @Transient
+    private Integer menuId;
 }

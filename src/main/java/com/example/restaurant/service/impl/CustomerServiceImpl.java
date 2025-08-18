@@ -40,6 +40,8 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public ResponseEntity<Customer> createCustomer(Customer customer) {
         logger.info("Creating customer: {}", customer.getName());
+        customer.setCreatedTime(java.time.LocalDateTime.now());
+        customer.setUpdatedTime(java.time.LocalDateTime.now());
         Customer saved = repo.save(customer);
         logger.info("Customer created with id: {}", saved.getId());
         return ResponseEntity.ok(saved);

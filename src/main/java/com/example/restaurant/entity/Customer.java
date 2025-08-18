@@ -17,10 +17,11 @@ public class Customer {
     private Integer id;
     private String name;
     private String phone;
+
     private LocalDateTime createdTime;
     private LocalDateTime updatedTime;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @JsonManagedReference("customer-booking")
     private List<Booking> bookings;
 }

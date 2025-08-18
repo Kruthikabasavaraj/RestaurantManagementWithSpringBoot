@@ -1,6 +1,7 @@
 package com.example.restaurant.controller;
 
 import com.example.restaurant.dto.OrderCreateDTO;
+import com.example.restaurant.entity.Booking;
 import com.example.restaurant.entity.OrderEntity;
 import com.example.restaurant.entity.OrderItem;
 import com.example.restaurant.service.OrderService;
@@ -30,9 +31,10 @@ public class OrderController {
         List<OrderItem> items = dto.getItems().stream().map(i -> {
             var oi = new OrderItem();
             oi.setQuantity(i.getQuantity());
+            oi.setMenuId(i.getMenuId()); // <-- Set menuId from DTO
             return oi;
         }).collect(Collectors.toList());
-        return ResponseEntity.status(201).body(service.createOrder(order, items));
+        return ResponseEntity.status(201).body(service.createOrder(order, items, dto.getBookingId()));
     }
 
     @GetMapping
