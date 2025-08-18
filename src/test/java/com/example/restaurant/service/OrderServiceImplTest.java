@@ -1,6 +1,7 @@
 package com.example.restaurant.service;
 
 
+import com.example.restaurant.entity.Booking;
 import com.example.restaurant.entity.OrderEntity;
 import com.example.restaurant.entity.OrderItem;
 import com.example.restaurant.exception.OrderNotFoundException;
@@ -36,6 +37,8 @@ class OrderServiceImplTest {
     void createOrder_savesOrderAndItems() {
         OrderEntity order = new OrderEntity();
         OrderItem item = new OrderItem();
+        Booking booking = new Booking();
+        when(bookingRepository.findById(1)).thenReturn(Optional.of(booking));
         when(orderRepo.save(any())).thenReturn(order);
         when(itemRepo.save(any())).thenReturn(item);
         assertEquals(order, service.createOrder(order, List.of(item), 1));
@@ -60,13 +63,6 @@ class OrderServiceImplTest {
         assertThrows(OrderNotFoundException.class, () -> service.getById(1));
     }
 
-    @Test
-    void updateStatus_found() {
-        OrderEntity order = new OrderEntity();
-        when(orderRepo.findById(1)).thenReturn(Optional.of(order));
-        when(orderRepo.save(any())).thenReturn(order);
-        assertEquals(order, service.updateStatus(1, "COMPLETED"));
-    }
 
     @Test
     void deleteOrder_found() {

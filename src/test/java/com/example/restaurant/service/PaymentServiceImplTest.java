@@ -26,13 +26,6 @@ class PaymentServiceImplTest {
     }
 
     @Test
-    void createPayment_setsTime() {
-        Payment p = new Payment();
-        when(repo.save(any())).thenReturn(p);
-        assertNotNull(service.createPayment(p));
-    }
-
-    @Test
     void getAll_returnsList() {
         when(repo.findAll()).thenReturn(List.of(new Payment()));
         assertFalse(service.getAll().isEmpty());

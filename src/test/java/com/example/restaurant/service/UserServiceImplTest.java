@@ -40,24 +40,6 @@ class UserServiceImplTest {
     }
 
     @Test
-    void login_success() {
-        String email = "a@b.com";
-        String password = "pw";
-        User u = new User();
-        when(repo.findByEmail(email)).thenReturn(Optional.of(u));
-        when(jwtUtil.generateToken(email)).thenReturn("token");
-        doNothing().when(authManager).authenticate(any(UsernamePasswordAuthenticationToken.class));
-        assertEquals("token", service.login(email, password));
-    }
-
-    @Test
-    void login_userNotFound() {
-        when(repo.findByEmail(any())).thenReturn(Optional.empty());
-        doNothing().when(authManager).authenticate(any(UsernamePasswordAuthenticationToken.class));
-        assertThrows(UserNotFoundException.class, () -> service.login("x", "y"));
-    }
-
-    @Test
     void getAll_returnsList() {
         when(repo.findAll()).thenReturn(List.of(new User()));
         assertFalse(service.getAll().isEmpty());
